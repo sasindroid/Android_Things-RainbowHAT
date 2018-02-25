@@ -28,6 +28,7 @@ public class HatActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setupAlphanumericDisplay("nice");
+        setupTemperatureSensor();
         setupButtons();
 
         // Light up the rainbow
@@ -91,14 +92,24 @@ public class HatActivity extends Activity {
         }
     }
 
-    private void displayCurrentTemperature() {
+    private void setupTemperatureSensor() {
         // Log the current temperature
         try {
             sensor = RainbowHat.openSensor();
             sensor.setTemperatureOversampling(Bmx280.OVERSAMPLING_1X);
-            Log.d(TAG, "temperature:" + sensor.readTemperature());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-            setupAlphanumericDisplay(String.valueOf(sensor.readTemperature()));
+    private void displayCurrentTemperature() {
+        // Log the current temperature
+        try {
+            if(sensor != null) {
+                Log.d(TAG, "temperature:" + sensor.readTemperature());
+
+                setupAlphanumericDisplay(String.valueOf(sensor.readTemperature()));
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
