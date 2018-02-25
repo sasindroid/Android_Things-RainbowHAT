@@ -62,7 +62,7 @@ public class ButtonActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if(keyCode == KeyEvent.KEYCODE_SPACE) {
+        if (keyCode == KeyEvent.KEYCODE_SPACE) {
             setBlueLedValue(true);
         }
 
@@ -72,7 +72,7 @@ public class ButtonActivity extends Activity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 
-        if(keyCode == KeyEvent.KEYCODE_SPACE) {
+        if (keyCode == KeyEvent.KEYCODE_SPACE) {
             setBlueLedValue(false);
         }
 
@@ -80,7 +80,7 @@ public class ButtonActivity extends Activity {
     }
 
     private void setBlueLedValue(boolean bool) {
-        if(blueLedGpio != null) {
+        if (blueLedGpio != null) {
             try {
                 blueLedGpio.setValue(bool);
             } catch (IOException e) {
@@ -93,27 +93,29 @@ public class ButtonActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if(service != null) {
+        if (service != null) {
             service = null;
         }
 
-        if(buttonInputDriver != null) {
+        if (buttonInputDriver != null) {
             buttonInputDriver.unregister();
             try {
                 buttonInputDriver.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                buttonInputDriver = null;
             }
-            buttonInputDriver = null;
         }
 
-        if(blueLedGpio != null) {
+        if (blueLedGpio != null) {
             try {
                 blueLedGpio.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                blueLedGpio = null;
             }
-            blueLedGpio = null;
         }
     }
 }
